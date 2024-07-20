@@ -56,6 +56,28 @@ public class Main {
         return rotatedImage;
     }
 
+    // Right the image
+
+    public static BufferedImage Righttransposeimage(BufferedImage inImage) {
+        int height = inImage.getHeight();
+        int width = inImage.getWidth();
+        BufferedImage rotatedImage = new BufferedImage(height, width, BufferedImage.TYPE_INT_RGB);
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                rotatedImage.setRGB(i,j,inImage.getRGB(j,i));
+            }
+        }
+        int index=rotatedImage.getWidth()-1;
+        for(int i=0;i<rotatedImage.getHeight();i++){
+            for(int j=0;j<rotatedImage.getWidth()/2;j++){
+                Color temp=new Color(rotatedImage.getRGB(j,i));
+                rotatedImage.setRGB(j,i,rotatedImage.getRGB(index-j,i));
+                rotatedImage.setRGB(index-j,i,temp.getRGB());
+            }
+        }
+        return rotatedImage;
+    }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter the full path of the file: ");
@@ -78,6 +100,7 @@ public class Main {
             System.out.println("Enter 1 for VERTICAL Inversion");
             System.out.println("Enter 2 for HORIZONTAL Inversion");
             System.out.println("Enter 3 for Rotate Left");
+            System.out.println("Enter 4 for Rotate Right");
 
 
 
@@ -104,6 +127,12 @@ public class Main {
                     output = new File("output.jpg");
                     ImageIO.write(result, "jpg", output);
                     System.out.println("Left transpose completed. Output saved as output.jpg.");
+                    break;
+                case 4:
+                    result = Righttransposeimage(inputImage);
+                    output = new File("output.jpg");
+                    ImageIO.write(result, "jpg", output);
+                    System.out.println("Right transpose completed. Output saved as output.jpg.");
                     break;
                 default:
                     System.out.println("Invalid operation");
