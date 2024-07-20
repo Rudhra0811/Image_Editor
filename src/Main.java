@@ -19,6 +19,20 @@ public class Main {
         return vInvertImage;
     }
 
+
+    public static BufferedImage horizontallyinvert(BufferedImage inImage) {
+        int height = inImage.getHeight();
+        int width = inImage.getWidth();
+        BufferedImage HinvertImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                HinvertImage.setRGB(width - j - 1, i, inImage.getRGB(j, i));
+            }
+        }
+
+        return HinvertImage;
+    }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter the full path of the file: ");
@@ -39,6 +53,7 @@ public class Main {
 
             // CLI UI
             System.out.println("Enter 1 for VERTICAL Inversion");
+            System.out.println("Enter 2 for HORIZONTAL Inversion");
 
             // Output processing
             int operation = sc.nextInt();
@@ -51,6 +66,12 @@ public class Main {
                     output = new File("output.jpg");
                     ImageIO.write(result, "jpg", output);
                     System.out.println("Vertical inversion completed. Output saved as output.jpg.");
+                    break;
+                case 2:
+                    result = horizontallyinvert(inputImage);
+                    output = new File("output.jpg");
+                    ImageIO.write(result, "jpg", output);
+                    System.out.println("Horizontal inversion completed. Output saved as output.jpg.");
                     break;
                 default:
                     System.out.println("Invalid operation");
