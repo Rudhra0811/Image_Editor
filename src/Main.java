@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.awt.image.BufferedImage;
@@ -19,7 +20,7 @@ public class Main {
         return vInvertImage;
     }
 
-
+    // Method to horizontally invert an image
     public static BufferedImage horizontallyinvert(BufferedImage inImage) {
         int height = inImage.getHeight();
         int width = inImage.getWidth();
@@ -31,6 +32,28 @@ public class Main {
         }
 
         return HinvertImage;
+    }
+
+    // Left the image
+
+    public static BufferedImage Lefttransposeimage(BufferedImage inImage) {
+        int height = inImage.getHeight();
+        int width = inImage.getWidth();
+        BufferedImage rotatedImage = new BufferedImage(height, width, BufferedImage.TYPE_INT_RGB);
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                rotatedImage.setRGB(i,j,inImage.getRGB(j,i));
+            }
+        }
+        int index=rotatedImage.getHeight()-1;
+        for(int j=0;j<rotatedImage.getWidth();j++){
+            for(int i=0;i<rotatedImage.getHeight()/2;i++){
+                Color temp=new Color(rotatedImage.getRGB(j,i));
+                rotatedImage.setRGB(j,i,rotatedImage.getRGB(j,index-i));
+                rotatedImage.setRGB(j,index-i,temp.getRGB());
+            }
+        }
+        return rotatedImage;
     }
 
     public static void main(String[] args) {
@@ -54,6 +77,9 @@ public class Main {
             // CLI UI
             System.out.println("Enter 1 for VERTICAL Inversion");
             System.out.println("Enter 2 for HORIZONTAL Inversion");
+            System.out.println("Enter 3 for Rotate Left");
+
+
 
             // Output processing
             int operation = sc.nextInt();
@@ -72,6 +98,12 @@ public class Main {
                     output = new File("output.jpg");
                     ImageIO.write(result, "jpg", output);
                     System.out.println("Horizontal inversion completed. Output saved as output.jpg.");
+                    break;
+                case 3:
+                    result = Lefttransposeimage(inputImage);
+                    output = new File("output.jpg");
+                    ImageIO.write(result, "jpg", output);
+                    System.out.println("Left transpose completed. Output saved as output.jpg.");
                     break;
                 default:
                     System.out.println("Invalid operation");
