@@ -78,6 +78,37 @@ public class Main {
         return rotatedImage;
     }
 
+    // brightness
+    public static BufferedImage changebrightness(BufferedImage inImage,int a){
+        int height = inImage.getHeight();
+        int width = inImage.getWidth();
+        BufferedImage output = new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
+        for(int i=0;i<height;i++){
+            for(int j=0;j<width;j++){
+                Color pixel = new Color(inImage.getRGB(j,i));
+                int red = pixel.getRed();
+                int green = pixel.getGreen();
+                int blue = pixel.getBlue();
+                red+= (a*red)/100;
+                green+=(a*green)/100;
+                blue+=(a*blue)/100;
+                if(red>255)
+                    red=255;
+                if(green>255)
+                    green=255;
+                if(blue>255)
+                    blue=255;
+                if(red<0)
+                    red=0;
+                if(green<0)
+                    green=0;
+                if(blue<0)
+                    blue=0;
+                Color newpixel = new Color(red,green,blue);
+                inImage.setRGB(j,i,newpixel.getRGB());}}
+        return inImage;
+    }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter the full path of the file: ");
@@ -101,6 +132,7 @@ public class Main {
             System.out.println("Enter 2 for HORIZONTAL Inversion");
             System.out.println("Enter 3 for Rotate Left");
             System.out.println("Enter 4 for Rotate Right");
+            System.out.println("Enter 5 for Change IMAGE BRIGHTNESS");
 
 
 
@@ -133,6 +165,13 @@ public class Main {
                     output = new File("output.jpg");
                     ImageIO.write(result, "jpg", output);
                     System.out.println("Right transpose completed. Output saved as output.jpg.");
+                    break;
+                case 5:
+                    System.out.println("Please specify the percentage by which you would like to increase the brightness");
+                    int a = sc.nextInt();
+                    result = changebrightness(inputImage,a);
+                    output = new File("output.jpg");
+                    ImageIO.write(result, "jpg", output);
                     break;
                 default:
                     System.out.println("Invalid operation");
