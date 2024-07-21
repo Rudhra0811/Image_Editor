@@ -78,7 +78,7 @@ public class Main {
         return rotatedImage;
     }
 
-    // brightness
+    // Method to change brightness
     public static BufferedImage changebrightness(BufferedImage inImage,int a){
         int height = inImage.getHeight();
         int width = inImage.getWidth();
@@ -109,6 +109,45 @@ public class Main {
         return inImage;
     }
 
+    // Method to blur an image
+    public static BufferedImage blurImage(BufferedImage inImage,int blrRatio){
+        int height = inImage.getHeight();
+        int width = inImage.getWidth();
+        BufferedImage outputImage = new BufferedImage(width, height , BufferedImage.TYPE_INT_RGB);
+        for (int i=0;i<height;i+=blrRatio){
+            for (int j=0;j<width;j+=blrRatio){
+                int sumofRED=0,sumofGREEN=0,sumofBLUE=0,sumofAlpha=0;
+                int count=0;
+                for(int k=i;k<i+blrRatio;k++){
+                    for (int l=j;l<j+blrRatio;l++){
+                        if (k<height && l<width) {
+                            Color pixel = new Color(inImage.getRGB(l, k));
+                            sumofRED += pixel.getRed();
+                            sumofGREEN += pixel.getGreen();
+                            sumofBLUE += pixel.getBlue();
+                            sumofAlpha += pixel.getAlpha();
+                            count++;
+                        }
+                    }
+                }
+                sumofRED=sumofRED/count;
+                sumofGREEN=sumofGREEN/count;
+                sumofBLUE=sumofBLUE/count;
+                sumofAlpha=sumofAlpha/count;
+                for(int k=i;k<i+blrRatio;k++){
+                    for(int l=j;l<j+blrRatio;l++){
+                        if (k<height && l<width){
+                            Color newpixel = new Color(sumofRED,sumofGREEN,sumofBLUE,sumofAlpha);
+                            outputImage.setRGB(l,k,newpixel.getRGB());
+                        }
+                    }
+                }
+
+            }
+        }
+        return outputImage;
+    }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter the full path of the file: ");
@@ -133,6 +172,7 @@ public class Main {
             System.out.println("Enter 3 for Rotate Left");
             System.out.println("Enter 4 for Rotate Right");
             System.out.println("Enter 5 for Change IMAGE BRIGHTNESS");
+            System.out.println("Enter 6 for convert image to BlurImage");
 
 
 
@@ -170,6 +210,13 @@ public class Main {
                     System.out.println("Please specify the percentage by which you would like to increase the brightness");
                     int a = sc.nextInt();
                     result = changebrightness(inputImage,a);
+                    output = new File("output.jpg");
+                    ImageIO.write(result, "jpg", output);
+                    break;
+                case 6:
+                    System.out.println("Please specify the ratio by which you would like to blur the image");
+                    int blrRatio = sc.nextInt();
+                    result = blurImage(inputImage,blrRatio);
                     output = new File("output.jpg");
                     ImageIO.write(result, "jpg", output);
                     break;
