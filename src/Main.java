@@ -312,7 +312,7 @@ public class Main {
                     result = BlueScale(inputImage);
                     output = new File("output.jpg");
                     ImageIO.write(result, "jpg", output);
-                    System.out.println("Image converted to BlueScale. Output saved as output.jpg.");
+                    System.out.println("Image converted to BlueScale. Output has been saved as output.jpg.");
                     break;
                 default:
                     System.out.println("Invalid operation");
