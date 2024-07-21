@@ -217,6 +217,29 @@ public class Main {
         return inImage;
     }
 
+    // Method to convert to RedScale
+    public static BufferedImage RedScale(BufferedImage inImage){
+        int height = inImage.getHeight();
+        int width = inImage.getWidth();
+        BufferedImage output = new BufferedImage(width,height,BufferedImage.TYPE_3BYTE_BGR);
+        for(int i=0;i<height;i++){
+            for(int j=0;j<width;j++){
+                Color pixel = new Color(inImage.getRGB(j,i));
+                int red = pixel.getRed();
+                int green = pixel.getGreen();
+                int blue = pixel.getBlue();
+                red+= (50*red)/100;
+                if(red>255)
+                    red=255;
+                if(red<0)
+                    red=0;
+                Color newpixel = new Color(red,green,blue);
+                inImage.setRGB(j,i,newpixel.getRGB());}}
+        return inImage;
+
+
+    }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter the full path of the file: ");
@@ -246,6 +269,7 @@ public class Main {
             System.out.println("Enter 8 for convert image to GRAYSCALE");
             System.out.println("Enter 9 for convert image to GREENSCALE");
             System.out.println("Enter 10 for convert image to BLUESCALE");
+            System.out.println("Enter 11 for convert image to REDSCALE");
 
 
 
@@ -313,6 +337,12 @@ public class Main {
                     output = new File("output.jpg");
                     ImageIO.write(result, "jpg", output);
                     System.out.println("Image converted to BlueScale. Output has been saved as output.jpg.");
+                    break;
+                case 11:
+                    result = RedScale(inputImage);
+                    output = new File("output.jpg");
+                    ImageIO.write(result, "jpg", output);
+                    System.out.println("Image converted to RedScale. Output has been saved as output.jpg.");
                     break;
                 default:
                     System.out.println("Invalid operation");
