@@ -159,6 +159,20 @@ public class Main {
         }
     }
 
+    // Method to convert to greyscale
+
+    public static BufferedImage convertToGrayScale(BufferedImage inputImage) {
+        int height = inputImage.getHeight();
+        int width = inputImage.getWidth();
+        BufferedImage outputImage = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                outputImage.setRGB(j, i, inputImage.getRGB(j, i));
+            }
+        }
+        return outputImage;
+    }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter the full path of the file: ");
@@ -185,6 +199,7 @@ public class Main {
             System.out.println("Enter 5 for Change IMAGE BRIGHTNESS");
             System.out.println("Enter 6 for convert image to BlurImage");
             System.out.println("Enter 7 for Print PIXEL VALUES of image");
+            System.out.println("Enter 8 for convert image to GRAYSCALE");
 
 
 
@@ -234,6 +249,12 @@ public class Main {
                     break;
                 case 7:
                     printpixelvalues(inputImage);
+                    break;
+                case 8:
+                    result = convertToGrayScale(inputImage);
+                    output = new File("output.jpg");
+                    ImageIO.write(result, "jpg", output);
+                    System.out.println("Image converted to grayscale. Output saved as output.jpg.");
                     break;
                 default:
                     System.out.println("Invalid operation");
