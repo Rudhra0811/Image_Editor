@@ -148,6 +148,17 @@ public class Main {
         return outputImage;
     }
 
+    // Method to print pixel values of an image
+    public static void printpixelvalues(BufferedImage inImage) {
+        int height = inImage.getHeight();
+        int width = inImage.getWidth();
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                System.out.print(inImage.getRGB(j, i) + " ");
+            }
+        }
+    }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter the full path of the file: ");
@@ -173,6 +184,7 @@ public class Main {
             System.out.println("Enter 4 for Rotate Right");
             System.out.println("Enter 5 for Change IMAGE BRIGHTNESS");
             System.out.println("Enter 6 for convert image to BlurImage");
+            System.out.println("Enter 7 for Print PIXEL VALUES of image");
 
 
 
@@ -219,6 +231,9 @@ public class Main {
                     result = blurImage(inputImage,blrRatio);
                     output = new File("output.jpg");
                     ImageIO.write(result, "jpg", output);
+                    break;
+                case 7:
+                    printpixelvalues(inputImage);
                     break;
                 default:
                     System.out.println("Invalid operation");
