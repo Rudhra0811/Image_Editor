@@ -285,6 +285,26 @@ public class Main {
         return sepiaImage;
     }
 
+    // Method to invert the colors of an image
+    public static BufferedImage invertColors(BufferedImage inImage) {
+        int width = inImage.getWidth();
+        int height = inImage.getHeight();
+        BufferedImage invertedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                Color pixel = new Color(inImage.getRGB(j, i));
+                int red = 255 - pixel.getRed();
+                int green = 255 - pixel.getGreen();
+                int blue = 255 - pixel.getBlue();
+
+                Color newPixel = new Color(red, green, blue);
+                invertedImage.setRGB(j, i, newPixel.getRGB());
+            }
+        }
+        return invertedImage;
+    }
+
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -318,6 +338,8 @@ public class Main {
             System.out.println("Enter 11 for convert image to REDSCALE");
             System.out.println("Enter 12 for Resize Image");
             System.out.println("Enter 13 for apply Sepia Tone");
+            System.out.println("Enter 14 for Dramatic Effect");
+
 
 
 
@@ -409,6 +431,13 @@ public class Main {
                     ImageIO.write(result, "jpg", output);
                     System.out.println("Sepia tone applied. Output saved as output.jpg.");
                     break;
+                case 14:
+                    result = invertColors(inputImage);
+                    output = new File("output.jpg");
+                    ImageIO.write(result, "jpg", output);
+                    System.out.println("Color inversion applied. Output saved as output.jpg.");
+                    break;
+
 
                 default:
                     System.out.println("Invalid operation");
