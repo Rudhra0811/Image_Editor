@@ -240,6 +240,22 @@ public class Main {
 
     }
 
+    // Method to resize an image
+    public static BufferedImage resizeImage(BufferedImage inImage, int newWidth, int newHeight) {
+        int width = inImage.getWidth();
+        int height = inImage.getHeight();
+        BufferedImage resizedImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g = resizedImage.createGraphics();
+
+        // Apply a rendering hint for better quality
+        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g.drawImage(inImage, 0, 0, newWidth, newHeight, null);
+        g.dispose();
+
+        return resizedImage;
+    }
+
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter the full path of the file: ");
@@ -270,6 +286,8 @@ public class Main {
             System.out.println("Enter 9 for convert image to GREENSCALE");
             System.out.println("Enter 10 for convert image to BLUESCALE");
             System.out.println("Enter 11 for convert image to REDSCALE");
+            System.out.println("Enter 12 for Resize Image");
+
 
 
 
@@ -344,6 +362,17 @@ public class Main {
                     ImageIO.write(result, "jpg", output);
                     System.out.println("Image converted to RedScale. Output has been saved as output.jpg.");
                     break;
+                case 12:
+                    System.out.println("Enter the new width:");
+                    int newWidth = sc.nextInt();
+                    System.out.println("Enter the new height:");
+                    int newHeight = sc.nextInt();
+                    result = resizeImage(inputImage, newWidth, newHeight);
+                    output = new File("output.jpg");
+                    ImageIO.write(result, "jpg", output);
+                    System.out.println("Image resized. Output saved as output.jpg.");
+                    break;
+
                 default:
                     System.out.println("Invalid operation");
                     break;
