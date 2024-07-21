@@ -255,6 +255,36 @@ public class Main {
         return resizedImage;
     }
 
+    // Method to convert an image to Sepia
+    public static BufferedImage applySepiaTone(BufferedImage inImage) {
+        int width = inImage.getWidth();
+        int height = inImage.getHeight();
+        BufferedImage sepiaImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                Color pixel = new Color(inImage.getRGB(j, i));
+                int red = pixel.getRed();
+                int green = pixel.getGreen();
+                int blue = pixel.getBlue();
+
+                // Apply sepia tone formula
+                int tr = (int)(0.393 * red + 0.769 * green + 0.189 * blue);
+                int tg = (int)(0.349 * red + 0.686 * green + 0.168 * blue);
+                int tb = (int)(0.272 * red + 0.534 * green + 0.131 * blue);
+
+                // Clamp values to the range [0, 255]
+                red = Math.min(255, tr);
+                green = Math.min(255, tg);
+                blue = Math.min(255, tb);
+
+                Color newPixel = new Color(red, green, blue);
+                sepiaImage.setRGB(j, i, newPixel.getRGB());
+            }
+        }
+        return sepiaImage;
+    }
+
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -287,6 +317,7 @@ public class Main {
             System.out.println("Enter 10 for convert image to BLUESCALE");
             System.out.println("Enter 11 for convert image to REDSCALE");
             System.out.println("Enter 12 for Resize Image");
+            System.out.println("Enter 13 for apply Sepia Tone");
 
 
 
@@ -371,6 +402,12 @@ public class Main {
                     output = new File("output.jpg");
                     ImageIO.write(result, "jpg", output);
                     System.out.println("Image resized. Output saved as output.jpg.");
+                    break;
+                case 13:
+                    result = applySepiaTone(inputImage);
+                    output = new File("output.jpg");
+                    ImageIO.write(result, "jpg", output);
+                    System.out.println("Sepia tone applied. Output saved as output.jpg.");
                     break;
 
                 default:
