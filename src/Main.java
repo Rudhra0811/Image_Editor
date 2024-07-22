@@ -323,6 +323,17 @@ public class Main {
         return output;
     }
 
+    // Method to convert image to black and white
+    public static BufferedImage convertToBlackAndWhite(BufferedImage inImage) {
+        int width = inImage.getWidth();
+        int height = inImage.getHeight();
+        BufferedImage output = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_BINARY);
+        Graphics2D g2d = output.createGraphics();
+        g2d.drawImage(inImage, 0, 0, null);
+        g2d.dispose();
+        return output;
+    }
+
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -358,6 +369,7 @@ public class Main {
             System.out.println("Enter 13 for apply Sepia Tone");
             System.out.println("Enter 14 for Dramatic Effect");
             System.out.println("Enter 15 for rotating an image by an arbitrary angle");
+            System.out.println("Enter 16 for Black and White Image");
 
 
 
@@ -464,6 +476,12 @@ public class Main {
                     output = new File("output.jpg");
                     ImageIO.write(result, "jpg", output);
                     System.out.println("Image rotated. Output saved as output.jpg.");
+                    break;
+                case 16:
+                    result = convertToBlackAndWhite(inputImage);
+                    output = new File("output.jpg");
+                    ImageIO.write(result, "jpg", output);
+                    System.out.println("Image converted to black and white. Output saved as output.jpg.");
                     break;
 
 
