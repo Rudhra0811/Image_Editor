@@ -334,6 +334,18 @@ public class Main {
         return output;
     }
 
+    // Method to add text to an image
+    public static BufferedImage addTextToImage(BufferedImage inImage, String text, int x, int y) {
+        BufferedImage output = new BufferedImage(inImage.getWidth(), inImage.getHeight(), inImage.getType());
+        Graphics2D g2d = output.createGraphics();
+        g2d.drawImage(inImage, 0, 0, null);
+        g2d.setPaint(Color.RED);
+        g2d.setFont(new Font("Serif", Font.BOLD, 35));
+        g2d.drawString(text, x, y);
+        g2d.dispose();
+        return output;
+    }
+
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -370,6 +382,9 @@ public class Main {
             System.out.println("Enter 14 for Dramatic Effect");
             System.out.println("Enter 15 for rotating an image by an arbitrary angle");
             System.out.println("Enter 16 for Black and White Image");
+            System.out.println("Enter 17 to add text to an image");
+
+
 
 
 
@@ -483,8 +498,19 @@ public class Main {
                     ImageIO.write(result, "jpg", output);
                     System.out.println("Image converted to black and white. Output saved as output.jpg.");
                     break;
-
-
+                case 17:
+                    System.out.println("Enter the text you would like to add to the image:");
+                    sc.nextLine();
+                    String text = sc.nextLine();
+                    System.out.println("Enter the x-coordinate where you would like to place the text:");
+                    int x = sc.nextInt();
+                    System.out.println("Enter the y-coordinate where you would like to place the text:");
+                    int y = sc.nextInt();
+                    result = addTextToImage(inputImage, text, x, y);
+                    output = new File("output.jpg");
+                    ImageIO.write(result, "jpg", output);
+                    System.out.println("Text added to image. Output saved as output.jpg.");
+                    break;
                 default:
                     System.out.println("Invalid operation");
                     break;
