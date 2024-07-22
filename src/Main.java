@@ -346,6 +346,71 @@ public class Main {
         return output;
     }
 
+    public static BufferedImage applyGaussianBlur(BufferedImage inImage) {
+        int radius = 5; // Radius of the Gaussian blur
+        int size = radius * 2 + 1;
+        float[] kernel = createGaussianKernel(radius);
+
+        int width = inImage.getWidth();
+        int height = inImage.getHeight();
+        BufferedImage blurredImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+
+        // Apply the Gaussian blur in the horizontal direction
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                float red = 0, green = 0, blue = 0;
+                for (int k = -radius; k <= radius; k++) {
+                    int pixelX = Math.min(Math.max(x + k, 0), width - 1);
+                    Color pixel = new Color(inImage.getRGB(pixelX, y));
+                    red += pixel.getRed() * kernel[k + radius];
+                    green += pixel.getGreen() * kernel[k + radius];
+                    blue += pixel.getBlue() * kernel[k + radius];
+                }
+                Color newPixel = new Color(clamp((int) red), clamp((int) green), clamp((int) blue));
+                blurredImage.setRGB(x, y, newPixel.getRGB());
+            }
+        }
+
+        // Apply the Gaussian blur in the vertical direction
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                float red = 0, green = 0, blue = 0;
+                for (int k = -radius; k <= radius; k++) {
+                    int pixelY = Math.min(Math.max(y + k, 0), height - 1);
+                    Color pixel = new Color(blurredImage.getRGB(x, pixelY));
+                    red += pixel.getRed() * kernel[k + radius];
+                    green += pixel.getGreen() * kernel[k + radius];
+                    blue += pixel.getBlue() * kernel[k + radius];
+                }
+                Color newPixel = new Color(clamp((int) red), clamp((int) green), clamp((int) blue));
+                blurredImage.setRGB(x, y, newPixel.getRGB());
+            }
+        }
+
+        return blurredImage;
+    }
+
+    // Helper method to create a Gaussian kernel
+    private static float[] createGaussianKernel(int radius) {
+        int size = radius * 2 + 1;
+        float[] kernel = new float[size];
+        float sigma = radius / 3.0f;
+        float sum = 0;
+        for (int i = -radius; i <= radius; i++) {
+            kernel[i + radius] = (float) Math.exp(-0.5 * (i * i) / (sigma * sigma));
+            sum += kernel[i + radius];
+        }
+        for (int i = 0; i < size; i++) {
+            kernel[i] /= sum;
+        }
+        return kernel;
+    }
+
+    // Helper method to clamp color values to the range [0, 255]
+    private static int clamp(int value) {
+        return Math.max(0, Math.min(255, value));
+    }
+
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -378,11 +443,13 @@ public class Main {
             System.out.println("Enter 10 for convert image to BLUESCALE");
             System.out.println("Enter 11 for convert image to REDSCALE");
             System.out.println("Enter 12 for Resize Image");
-            System.out.println("Enter 13 for apply Sepia Tone");
+            System.out.println("Enter 13 for applying Sepia Tone");
             System.out.println("Enter 14 for Dramatic Effect");
             System.out.println("Enter 15 for rotating an image by an arbitrary angle");
             System.out.println("Enter 16 for Black and White Image");
             System.out.println("Enter 17 to add text to an image");
+            System.out.println("Enter 18 for Gaussian Blur");
+
 
 
 
@@ -510,6 +577,12 @@ public class Main {
                     output = new File("output.jpg");
                     ImageIO.write(result, "jpg", output);
                     System.out.println("Text added to image. Output saved as output.jpg.");
+                    break;
+                case 18:
+                    result = applyGaussianBlur(inputImage);
+                    output = new File("output.jpg");
+                    ImageIO.write(result, "jpg", output);
+                    System.out.println("Gaussian blur applied. Output saved as output.jpg.");
                     break;
                 default:
                     System.out.println("Invalid operation");
