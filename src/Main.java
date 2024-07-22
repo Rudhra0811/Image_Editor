@@ -305,6 +305,24 @@ public class Main {
         return invertedImage;
     }
 
+    // Method to rotate an image by an arbitrary angle
+    public static BufferedImage rotateImage(BufferedImage inImage, double angle) {
+        int width = inImage.getWidth();
+        int height = inImage.getHeight();
+        double radianAngle = Math.toRadians(angle);
+        double cos = Math.abs(Math.cos(radianAngle));
+        double sin = Math.abs(Math.sin(radianAngle));
+        int newWidth = (int) Math.floor(width * cos + height * sin);
+        int newHeight = (int) Math.floor(height * cos + width * sin);
+        BufferedImage output = new BufferedImage(newWidth, newHeight, inImage.getType());
+        Graphics2D g2d = output.createGraphics();
+        g2d.translate((newWidth - width) / 2, (newHeight - height) / 2);
+        g2d.rotate(radianAngle, width / 2, height / 2);
+        g2d.drawRenderedImage(inImage, null);
+        g2d.dispose();
+        return output;
+    }
+
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -339,6 +357,8 @@ public class Main {
             System.out.println("Enter 12 for Resize Image");
             System.out.println("Enter 13 for apply Sepia Tone");
             System.out.println("Enter 14 for Dramatic Effect");
+            System.out.println("Enter 15 for rotating an image by an arbitrary angle");
+
 
 
 
@@ -436,6 +456,14 @@ public class Main {
                     output = new File("output.jpg");
                     ImageIO.write(result, "jpg", output);
                     System.out.println("Color inversion applied. Output saved as output.jpg.");
+                    break;
+                case 15:
+                    System.out.println("Enter the angle by which you would like to rotate the image:");
+                    double angle = sc.nextDouble();
+                    result = rotateImage(inputImage, angle);
+                    output = new File("output.jpg");
+                    ImageIO.write(result, "jpg", output);
+                    System.out.println("Image rotated. Output saved as output.jpg.");
                     break;
 
 
